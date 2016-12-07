@@ -7,6 +7,8 @@ namespace DailyRunner
 {
     public class RackManager1 : DailyChallenge
     {
+
+        private static readonly char Blank = '?';
         public RackManager1()
         {
         }
@@ -17,6 +19,11 @@ namespace DailyRunner
             Console.WriteLine($"scrabble(\"eerriin\", \"eerie\")-> {RackCheck("eerriin", "eerie")}");
             Console.WriteLine($"scrabble(\"orrpgma\", \"program\")-> {RackCheck("orrpgma", "program")}");
             Console.WriteLine($"scrabble(\"orppgma\", \"program\")-> {RackCheck("orppgma", "program")}");
+            Console.WriteLine();
+            Console.WriteLine($"scrabble(\"pizza??\", \"pizzazz\")-> {RackCheck("pizza??", "pizzazz")}");
+            Console.WriteLine($"scrabble(\"piizza?\", \"pizzazz\")-> {RackCheck("piizza?", "pizzazz")}");
+            Console.WriteLine($"scrabble(\"a??????\", \"program\")-> {RackCheck("a??????", "program")}");
+            Console.WriteLine($"scrabble(\"b??????\", \"program\")-> {RackCheck("b??????", "program")}");
         }
 
         public bool RackCheck(string tiles, string word)
@@ -39,7 +46,24 @@ namespace DailyRunner
 
                     if( !(tileCount >= entry.Value))
                     {
-                        return false;
+                        int numberBlanks = 0;
+
+                        if(tileFreq.TryGetValue(Blank,out numberBlanks))
+                        {
+                            int tilesNeeded = entry.Value - tileCount;
+                            if( numberBlanks >= tilesNeeded )
+                            {
+                                tileFreq[Blank] -= tilesNeeded;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
 
@@ -49,8 +73,6 @@ namespace DailyRunner
             {
                 return false;
             }
-
-                   
         }
 
         public Dictionary<char, int> GetCharacterFrequency(string word)
