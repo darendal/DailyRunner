@@ -7,7 +7,7 @@ namespace DailyRunner
 {
     public class Program
     {
-        public static DailyChallenge solution = new RackManager1();
+        public static DailyChallenge solution = new Defuser();
 
         public static void Main(string[] args)
         {
